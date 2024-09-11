@@ -31,13 +31,13 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
+    public ResponseEntity<Page<UserModel>> getAll(SpecificationTemplate.UserSpec spec,
                                                        @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable) {
 
         Page<UserModel> userModelPage = this.userService.findAll(spec, pageable);
         if (!userModelPage.isEmpty()) {
             for (UserModel user : userModelPage.toList()) {
-                user.add(linkTo(methodOn(UserController.class).getOneUser(user.getUserId())).withSelfRel());
+                user.add(linkTo(methodOn(UserController.class).getOne(user.getId())).withSelfRel());
             }
         }
 
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneUser(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<Object> getOne(@PathVariable(value = "id") UUID id) {
         Optional<UserModel> userModelOptional = this.userService.findById(id);
 
         if (userModelOptional.isEmpty()) {
@@ -56,17 +56,17 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") UUID id) {
         Optional<UserModel> userModelOptional = this.userService.findById(id);
         if (userModelOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         this.userService.delete(id);
-        return ResponseEntity.ok("User deleted successfully");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted successfully");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id,
+    public ResponseEntity<Object> update(@PathVariable(value = "id") UUID id,
                                              @RequestBody @Validated(UserDto.UserView.UserPut.class) @JsonView(UserDto.UserView.UserPut.class) UserDto userDto) {
 
         Optional<UserModel> userModelOptional = this.userService.findById(id);

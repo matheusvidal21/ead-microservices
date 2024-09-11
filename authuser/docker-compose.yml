@@ -7,9 +7,10 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: ead-authuser
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     networks:
       - ead-network
 
