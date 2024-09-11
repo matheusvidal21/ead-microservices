@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: ead-authuser
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - ead-network
+
+networks:
+  ead-network:
+    driver: bridge
