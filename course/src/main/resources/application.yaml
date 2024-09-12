@@ -18,5 +18,12 @@ spring:
       schema-locations: classpath:schema.sql
       data-locations: classpath:data.sql
 
+logging:
+  level:
+    com.ead: TRACE
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: INFO
+
 server:
   port: 8082

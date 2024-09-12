@@ -13,5 +13,12 @@ spring:
       hibernate:
         show_sql: true
 
+logging:
+  level:
+    com.ead: TRACE
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: INFO
+
 server:
   port: 8087

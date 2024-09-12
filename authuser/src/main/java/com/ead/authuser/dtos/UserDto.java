@@ -19,7 +19,7 @@ public class UserDto {
         public static interface ImagePut {}
     }
 
-    private UUID userId;
+    private UUID id;
 
     @NotBlank(groups = UserView.RegistrationPost.class)
     @JsonView(UserView.RegistrationPost.class)
