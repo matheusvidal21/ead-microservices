@@ -19,6 +19,8 @@ public interface UserService {
 
     void delete(UUID id);
 
+    void delete(UserModel userModel);
+
     void save(UserModel userModel);
 
     boolean existsByUsername(String username);
