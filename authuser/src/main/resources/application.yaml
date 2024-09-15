@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: ead-authuser-service
   datasource:
     url: jdbc:postgresql://localhost:5433/ead-authuser
     username: postgres
@@ -31,4 +33,12 @@ server:
 ead:
   api:
     url:
-      course: 'http://localhost:8082'
+      course: 'http://ead-course-service'
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:8761/eureka'
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
