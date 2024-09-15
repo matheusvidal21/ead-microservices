@@ -1,3 +1,8 @@
+server:
+  port: 8082
+  servlet:
+    context-path: '/ead-course/'
+
 spring:
   application:
     name: ead-course-service
@@ -27,13 +32,10 @@ logging:
     org.springframework.web: INFO
     org.hibernate: INFO
 
-server:
-  port: 8082
-
 ead:
   api:
     url:
-      authuser: 'http://ead-authuser-service'
+      authuser: 'http://ead-authuser-service/ead-authuser'
 
 eureka:
   client:
