@@ -64,4 +64,8 @@ public class CourseModel implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime lastUpdateDate;
 
+    public CourseUserModel converToCourseUserModel(UUID userId) {
+        return new CourseUserModel(null, this, userId);
+    }
+
 }

@@ -23,7 +23,6 @@ VALUES
 INSERT INTO tb_courses_users (course_user_id, user_id, course_id)
 VALUES
     ('550e8400-e29b-41d4-a716-446655440014', '550e8400-e29b-41d4-a716-446655440012', '550e8400-e29b-41d4-a716-446655440001'), -- Alice Green está matriculada no curso de Java
-    ('550e8400-e29b-41d4-a716-446655440015', '550e8400-e29b-41d4-a716-446655440013', '550e8400-e29b-41d4-a716-446655440003'), -- Bob Brown está matriculado no curso de Python
     ('550e8400-e29b-41d4-a716-446655440016', '550e8400-e29b-41d4-a716-446655440014', '550e8400-e29b-41d4-a716-446655440001'), -- Charlie White está matriculado no curso de Java
     ('550e8400-e29b-41d4-a716-446655440017', '550e8400-e29b-41d4-a716-446655440015', '550e8400-e29b-41d4-a716-446655440003'),  -- Danielle Red está matriculada no curso de Python
     ('550e8400-e29b-41d4-a716-446655440018', '550e8400-e29b-41d4-a716-446655440015', '550e8400-e29b-41d4-a716-446655440001')  -- Danielle Red está matriculada no curso de Java

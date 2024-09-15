@@ -1,11 +1,11 @@
 package com.ead.course.clients;
 
-import com.ead.course.dto.CourseDto;
 import com.ead.course.dto.ResponsePageDto;
 import com.ead.course.dto.UserDto;
 import com.ead.course.services.UtilsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @Log4j2
 @Component
-public class CourseClient {
+public class AuthUserClient {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -29,9 +29,12 @@ public class CourseClient {
     @Autowired
     private UtilsService utilsService;
 
+    @Value("${ead.api.url.authuser}")
+    private String REQUESTL_URL_AUTHUSER;
+
     public Page<UserDto> getAllUsersByCourse(UUID courseId, Pageable pageable) {
         List<UserDto> searchResult = null;
-        String url = this.utilsService.createUrl(courseId, pageable);
+        String url = REQUESTL_URL_AUTHUSER + this.utilsService.createUrlGetAllUsersByCourse(courseId, pageable);
 
         log.debug("Request URL: {}", url);
         log.info("Request URL: {}", url);
@@ -41,11 +44,15 @@ public class CourseClient {
             searchResult = result.getBody().getContent();
             log.debug("Response Number of Elements: {}", searchResult.size());
         } catch (HttpStatusCodeException e) {
-
             log.error("Error request /users: {}", e);
         }
         log.info("Ending request /users courseId: {}", courseId);
         return new PageImpl<>(searchResult);
+    }
+
+    public ResponseEntity<UserDto> getOneUserById(UUID userId) {
+        String url = REQUESTL_URL_AUTHUSER + "/users/" + userId;
+        return this.restTemplate.exchange(url, HttpMethod.GET, null, UserDto.class);
     }
 
 }
