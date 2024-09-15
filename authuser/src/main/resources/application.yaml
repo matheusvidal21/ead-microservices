@@ -5,13 +5,18 @@ spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       dialect: org.hibernate.dialect.PostgreSQLDialect
     jdbc:
       lob.non_contextual_creation: true
     properties:
       hibernate:
         show_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
 
 logging:
   level:
