@@ -69,4 +69,8 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     @Column(nullable = false)
     private LocalDateTime lastUpdateDate;
 
+    public UserCourseModel convertToUserCourseModel(UUID courseId) {
+        return new UserCourseModel(null, this, courseId);
+    }
+
 }

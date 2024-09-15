@@ -68,7 +68,7 @@ public class CourseUserController {
             log.error("Error: {}", e);
         }
 
-        CourseUserModel courseUserModel = courseUserService.save(courseModelOptional.get().converToCourseUserModel(subscriptionDto.getUserId()));
+        CourseUserModel courseUserModel = courseUserService.saveAndSendSubscriptionUserInCourse(courseModelOptional.get().converToCourseUserModel(subscriptionDto.getUserId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(courseUserModel);
     }
 }
