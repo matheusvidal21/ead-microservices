@@ -53,8 +53,11 @@ public class CourseModel implements Serializable {
     private Set<ModuleModel> modules;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    private Set<CourseUserModel> courseUsers;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "tb_courses_users",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<UserModel> users;
 
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -63,9 +66,5 @@ public class CourseModel implements Serializable {
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime lastUpdateDate;
-
-    public CourseUserModel converToCourseUserModel(UUID userId) {
-        return new CourseUserModel(null, this, userId);
-    }
 
 }

@@ -24,6 +24,8 @@ spring:
     init:
       mode: always
       data-locations: classpath:data.sql
+  rabbitmq:
+    addresses: amqps://uiybifac:waup7qicF1K3xcTRqeo_dINGzCPGa5ss@gull.rmq.cloudamqp.com/uiybifac
 
 logging:
   level:
@@ -36,6 +38,9 @@ ead:
   api:
     url:
       course: 'http://ead-course-service/ead-course'
+  broker:
+    exchage:
+      userEvent: ead.userevent
 
 eureka:
   client:

@@ -1,9 +1,9 @@
 package com.ead.authuser.services.impl;
 
 import com.ead.authuser.clients.CourseClient;
-import com.ead.authuser.models.UserCourseModel;
+import com.ead.authuser.enums.ActionType;
 import com.ead.authuser.models.UserModel;
-import com.ead.authuser.repositories.UserCourseRepository;
+import com.ead.authuser.publishers.UserEventPublisher;
 import com.ead.authuser.repositories.UserRepository;
 import com.ead.authuser.services.UserService;
 import jakarta.transaction.Transactional;
@@ -24,10 +24,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserCourseRepository userCourseRepository;
+    private CourseClient courseClient;
 
     @Autowired
-    private CourseClient courseClient;
+    private UserEventPublisher userEventPublisher;
 
     @Override
     public List<UserModel> findAll() {
@@ -46,35 +46,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void delete(UUID id) {
-        List<UserCourseModel> userCourseModelList = this.userCourseRepository.findAllUserCourseIntoUser(id);
-        if (!userCourseModelList.isEmpty()){
-            this.userCourseRepository.deleteAll(userCourseModelList);
-        }
-
-        this.userRepository.deleteById(id);
-    }
-
-    @Transactional
-    @Override
     public void delete(UserModel userModel){
-        boolean deleteUserCourseInCourse = false;
-        List<UserCourseModel> userCourseModelList = this.userCourseRepository.findAllUserCourseIntoUser(userModel.getId());
-        if (!userCourseModelList.isEmpty()){
-            this.userCourseRepository.deleteAll(userCourseModelList);
-            deleteUserCourseInCourse = true;
-        }
-
         this.userRepository.delete(userModel);
-        if (deleteUserCourseInCourse){
-            this.courseClient.deleteUserInCourse(userModel.getId());
-        }
     }
 
-
     @Override
-    public void save(UserModel userModel) {
-        this.userRepository.save(userModel);
+    public UserModel save(UserModel userModel) {
+        return this.userRepository.save(userModel);
     }
 
     @Override
@@ -85,5 +63,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         return this.userRepository.existsByEmail(email);
+    }
+
+    @Transactional
+    @Override
+    public UserModel saveUser(UserModel userModel) {
+        userModel = this.save(userModel);
+        this.userEventPublisher.publishUserEvent(userModel.convertToUserEventDto(), ActionType.CREATE);
+        return userModel;
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(UserModel userModel) {
+        this.delete(userModel);
+        this.userEventPublisher.publishUserEvent(userModel.convertToUserEventDto(), ActionType.DELETE);
+    }
+
+    @Override
+    public UserModel updateUser(UserModel userModel) {
+        userModel = this.save(userModel);
+        this.userEventPublisher.publishUserEvent(userModel.convertToUserEventDto(), ActionType.UPDATE);
+        return null;
+    }
+
+    @Override
+    public UserModel updatePassword(UserModel userModel) {
+        return this.save(userModel);
     }
 }

@@ -88,14 +88,12 @@ public class CourseController {
                                                     @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                     @RequestParam(required = false) UUID userId){
         log.debug("GET getAllCourses spec {}, pageable {}", spec, pageable);
-        Page<CourseModel> courseModelPage = null;
-        if (userId != null){
-            courseModelPage = this.courseService.findAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable);
-        } else {
-            courseModelPage = this.courseService.findAll(spec, pageable);
-        }
 
-        return ResponseEntity.status(HttpStatus.OK).body(courseModelPage);
+        if (userId != null){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(this.courseService.findAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
     }
 
     @GetMapping("/{courseId}")

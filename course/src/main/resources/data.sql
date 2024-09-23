@@ -1,3 +1,12 @@
+-- Inserindo dados na tabela de Usuários (tb_users)
+INSERT INTO tb_users (user_id, email, full_name, user_status, user_type, cpf, image_url)
+VALUES
+    ('550e8400-e29b-41d4-a716-446655440012', 'alice@example.com', 'Alice Green', 'ACTIVE', 'STUDENT', '123.123.123-01', 'http://example.com/alice.jpg'),
+    ('550e8400-e29b-41d4-a716-446655440013', 'bob@example.com', 'Bob Brown', 'BLOCKED', 'INSTRUCTOR', '234.234.234-02', 'http://example.com/bob.jpg'),
+    ('550e8400-e29b-41d4-a716-446655440014', 'charlie@example.com', 'Charlie White', 'ACTIVE', 'STUDENT', '345.345.345-03', 'http://example.com/charlie.jpg'),
+    ('550e8400-e29b-41d4-a716-446655440015', 'danielle@example.com', 'Danielle Red', 'ACTIVE', 'INSTRUCTOR', '456.456.456-04', 'http://example.com/danielle.jpg')
+    ON CONFLICT (user_id) DO NOTHING;
+
 -- Inserindo dados na tabela de Cursos
 INSERT INTO tb_courses (course_id, name, description, image_url, course_status, course_level, user_instructor, creation_date, last_update_date)
 VALUES
@@ -20,10 +29,10 @@ VALUES
     ON CONFLICT (lesson_id) DO NOTHING;
 
 -- Inserindo dados na tabela de Cursos de Usuários (tb_courses_users)
-INSERT INTO tb_courses_users (course_user_id, user_id, course_id)
+INSERT INTO tb_courses_users (user_id, course_id)
 VALUES
-    ('550e8400-e29b-41d4-a716-446655440014', '550e8400-e29b-41d4-a716-446655440012', '550e8400-e29b-41d4-a716-446655440001'), -- Alice Green está matriculada no curso de Java
-    ('550e8400-e29b-41d4-a716-446655440016', '550e8400-e29b-41d4-a716-446655440014', '550e8400-e29b-41d4-a716-446655440001'), -- Charlie White está matriculado no curso de Java
-    ('550e8400-e29b-41d4-a716-446655440017', '550e8400-e29b-41d4-a716-446655440015', '550e8400-e29b-41d4-a716-446655440003'),  -- Danielle Red está matriculada no curso de Python
-    ('550e8400-e29b-41d4-a716-446655440018', '550e8400-e29b-41d4-a716-446655440015', '550e8400-e29b-41d4-a716-446655440001')  -- Danielle Red está matriculada no curso de Java
-ON CONFLICT (course_user_id) DO NOTHING;
+    ('550e8400-e29b-41d4-a716-446655440012', '550e8400-e29b-41d4-a716-446655440001'), -- Alice Green está matriculada no curso de Java
+    ('550e8400-e29b-41d4-a716-446655440014', '550e8400-e29b-41d4-a716-446655440001'), -- Charlie White está matriculado no curso de Java
+    ('550e8400-e29b-41d4-a716-446655440015', '550e8400-e29b-41d4-a716-446655440003'),  -- Danielle Red está matriculada no curso de Python
+    ('550e8400-e29b-41d4-a716-446655440015', '550e8400-e29b-41d4-a716-446655440001')  -- Danielle Red está matriculada no curso de Java
+ON CONFLICT (user_id, course_id) DO NOTHING;

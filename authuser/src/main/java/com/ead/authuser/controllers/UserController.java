@@ -39,14 +39,7 @@ public class UserController {
                                                   @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                   @RequestParam(required = false) UUID courseId) {
         log.debug("GET getAllUsers spec {}, pageable {}", spec, pageable);
-        Page<UserModel> userModelPage = null;
-        if (courseId != null) {
-            userModelPage = this.userService.findAll(SpecificationTemplate.userCourseId(courseId).and(spec), pageable);
-        } else {
-            userModelPage = this.userService.findAll(spec, pageable);
-        }
-
-                this.userService.findAll(spec, pageable);
+        Page<UserModel> userModelPage = this.userService.findAll(spec, pageable);
         if (!userModelPage.isEmpty()) {
             for (UserModel user : userModelPage.toList()) {
                 user.add(linkTo(methodOn(UserController.class).getOneUser(user.getId())).withSelfRel());
@@ -76,7 +69,7 @@ public class UserController {
         if (userModelOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        this.userService.delete(userModelOptional.get());
+        this.userService.deleteUser(userModelOptional.get());
         log.debug("DELETE deleteUser userId {}", id);
         log.info("User deleted successfully userId {}", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted successfully");
@@ -97,7 +90,7 @@ public class UserController {
         userModel.setPhoneNumber(userDto.getPhoneNumber());
         userModel.setCpf(userDto.getCpf());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        this.userService.save(userModel);
+        this.userService.updateUser(userModel);
         log.debug("PUT updateUser userModel updated userId {}", userModel.getId());
         log.info("User updated successfully userId {}", userModel.getId());
         return ResponseEntity.ok(userModel);
@@ -120,7 +113,7 @@ public class UserController {
         var userModel = userModelOptional.get();
         userModel.setPassword(userDto.getPassword());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        this.userService.save(userModel);
+        this.userService.updatePassword(userModel);
         log.debug("PUT updatePassword userModel updated userId {}", userModel.getId());
         log.info("Password updated successfully userId {}", userModel.getId());
         return ResponseEntity.ok("Password updated successfully");
@@ -138,7 +131,7 @@ public class UserController {
         var userModel = userModelOptional.get();
         userModel.setImageUrl(userDto.getImageUrl());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        this.userService.save(userModel);
+        this.userService.updateUser(userModel);
         log.debug("PUT updateImage userModel updated userId {}", userModel.getId());
         return ResponseEntity.ok(userModel);
     }
