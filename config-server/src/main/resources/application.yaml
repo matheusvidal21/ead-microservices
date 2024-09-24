@@ -13,10 +13,18 @@ spring:
           username: matheusvidal21
           password: ${GITHUB_TOKEN}
 
+ead:
+  config-server:
+    username: configserver
+    password: 'ead123cs'
+  service-registry:
+    username: serviceregistry
+    password: 'ead123sr'
+
 eureka:
   client:
-    serviceUrl:
-      defaultZone: 'http://localhost:8761/eureka'
+    service-url:
+      defaultZone: 'http://${ead.service-registry.username}:${ead.service-registry.password}@localhost:8761/eureka'
   instance:
     prefer-ip-address: true
     hostname: localhost
