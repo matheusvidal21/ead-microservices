@@ -1,14 +1,19 @@
 package com.ead.course.services.impl;
 
+import com.ead.course.dto.NotificationCommandDto;
 import com.ead.course.models.CourseModel;
 import com.ead.course.models.LessonModel;
 import com.ead.course.models.ModuleModel;
+import com.ead.course.models.UserModel;
+import com.ead.course.publishers.NotificationCommandPublisher;
 import com.ead.course.repositories.CourseRepository;
 import com.ead.course.repositories.LessonRepository;
 import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.repositories.UserRepository;
 import com.ead.course.services.CourseService;
 import jakarta.transaction.Transactional;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Log4j2
 @Service
 public class CourseServiceImpl implements CourseService {
 
@@ -32,7 +38,7 @@ public class CourseServiceImpl implements CourseService {
     private LessonRepository lessonRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private NotificationCommandPublisher notificationCommandPublisher;
 
     @Transactional
     @Override
@@ -80,5 +86,20 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void saveSubscriptionUserInCourse(UUID courseId, UUID userId) {
         this.courseRepository.saveSubscriptionUserInCourse(courseId, userId);
+    }
+
+    @Transactional
+    @Override
+    public void saveSubscriptionUserInCourseAndSendNotification(CourseModel courseModel, UserModel userModel) {
+        this.courseRepository.saveSubscriptionUserInCourse(courseModel.getId(), userModel.getId());
+        try {
+            NotificationCommandDto notificationCommandDto = new NotificationCommandDto();
+            notificationCommandDto.setUserId(userModel.getId());
+            notificationCommandDto.setTitle("Welcome to the course: " + courseModel.getName());
+            notificationCommandDto.setMessage(userModel.getFullName() + ", your registration has been successful!");
+            this.notificationCommandPublisher.publishNotificationCommand(notificationCommandDto);
+        } catch (Exception e) {
+            log.warn("Error to send notification to user: " + userModel.getId());
+        }
     }
 }
