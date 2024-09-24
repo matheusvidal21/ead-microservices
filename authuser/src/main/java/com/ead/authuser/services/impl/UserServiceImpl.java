@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserEventPublisher userEventPublisher;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserModel> findAll() {
@@ -52,6 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel save(UserModel userModel) {
+        userModel.setPassword(this.passwordEncoder.encode(userModel.getPassword()));
         return this.userRepository.save(userModel);
     }
 
@@ -89,6 +94,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel updatePassword(UserModel userModel) {
+        userModel.setPassword(this.passwordEncoder.encode(userModel.getPassword()));
         return this.save(userModel);
     }
 }
