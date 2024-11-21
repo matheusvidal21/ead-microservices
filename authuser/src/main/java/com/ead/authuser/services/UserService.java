@@ -32,4 +32,6 @@ public interface UserService {
     UserModel updateUser(UserModel userModel);
 
     UserModel updatePassword(UserModel userModel);
+
+    void subscribeInstructor(UUID userId);
 }

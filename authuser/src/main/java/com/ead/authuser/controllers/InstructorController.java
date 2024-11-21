@@ -1,9 +1,13 @@
 package com.ead.authuser.controllers;
 
 import com.ead.authuser.dtos.InstructorDto;
+import com.ead.authuser.enums.RoleType;
 import com.ead.authuser.enums.UserType;
+import com.ead.authuser.models.RoleModel;
 import com.ead.authuser.models.UserModel;
+import com.ead.authuser.services.RoleService;
 import com.ead.authuser.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +28,16 @@ public class InstructorController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/subscription")
-    public ResponseEntity<Object> saveSubscriptionInstructor(@RequestBody @Valid InstructorDto instructorDto){
-        Optional<UserModel> userModelOptional = this.userService.findById(instructorDto.getUserId());
-        if (userModelOptional.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
+    @Autowired
+    private RoleService roleService;
 
-        UserModel userModel = userModelOptional.get();
-        userModel.setUserType(UserType.INSTRUCTOR);
-        userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        this.userService.saveUser(userModel);
-        return ResponseEntity.status(HttpStatus.OK).body(userModel);
+    @PostMapping("/subscription")
+    public ResponseEntity<Object> saveSubscriptionInstructor(@RequestBody @Valid InstructorDto instructorDto) {
+        try {
+            this.userService.subscribeInstructor(instructorDto.getUserId());
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

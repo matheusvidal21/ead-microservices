@@ -31,7 +31,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         body.put("timestamp", System.currentTimeMillis());
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
         body.put("error", "Unauthorized");
-        body.put("message", "Unauthorized: you need to be logged in to access this feature.");
+        body.put("message", "Unauthorized: " + authException.getMessage());
         body.put("path", request.getServletPath());
 
         this.objectMapper.writeValue(response.getOutputStream(), body);
