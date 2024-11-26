@@ -113,7 +113,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void subscribeInstructor(UUID userId) {
+        UserModel userModel = this.userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         RoleModel roleModel = this.roleRepository.findByRoleName(RoleType.ROLE_INSTRUCTOR).orElseThrow(() -> new RuntimeException("Role not found"));
+
+        if (userModel.getRoles().contains(roleModel)){
+            return;
+        }
+
+        userModel.setUserType(UserType.INSTRUCTOR);
+        this.userEventPublisher.publishUserEvent(userModel.convertToUserEventDto(), ActionType.UPDATE);
         this.userRepository.addRoleToUser(userId, roleModel.getId());
         this.userRepository.updateUserType(userId, UserType.INSTRUCTOR.toString());
     }

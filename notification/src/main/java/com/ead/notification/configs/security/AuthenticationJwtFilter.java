@@ -1,4 +1,4 @@
-package com.ead.authuser.configs.security;
+package com.ead.notification.configs.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,16 +24,14 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwtStr = this.getTokenHeader(request);
             if(jwtStr != null && this.jwtProvider.validateJwt(jwtStr)) {
                 String userId = this.jwtProvider.getSubjectJwt(jwtStr);
-                UserDetails userDetails = this.userDetailsService.loadUserById(UUID.fromString(userId));
+                String rolesStr = this.jwtProvider.getClaimNameJwt(jwtStr, "roles");
+                UserDetails userDetails = UserDetailsImpl.build(UUID.fromString(userId), rolesStr);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

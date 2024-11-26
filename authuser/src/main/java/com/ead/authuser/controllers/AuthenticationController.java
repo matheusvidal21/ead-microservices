@@ -14,18 +14,14 @@ import com.ead.authuser.services.UserService;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +43,6 @@ public class AuthenticationController {
     @Autowired
     private JwtProvider jwtProvider;
 
-    /*@Autowired
-    private DaoAuthenticationProvider daoAuthenticationProvider;*/
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -85,7 +79,7 @@ public class AuthenticationController {
     public ResponseEntity<JwtDto> loginUser(@RequestBody @Valid LoginDto loginDto) {
         Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = this.jwtProvider.genereteJwt(authentication);
+        String jwt = this.jwtProvider.generateJwt(authentication);
         return ResponseEntity.ok(new JwtDto(jwt));
     }
 

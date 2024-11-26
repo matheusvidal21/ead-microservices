@@ -16,6 +16,9 @@ public interface UserRepository extends JpaRepository<UserModel, UUID>, JpaSpeci
     @EntityGraph(attributePaths = {"roles"}, type = EntityGraph.EntityGraphType.FETCH)
     Optional<UserModel> findByUsername(String username);
 
+    @EntityGraph(attributePaths = {"roles"}, type = EntityGraph.EntityGraphType.FETCH)
+    Optional<UserModel> findById(UUID userId);
+
     @Modifying
     @Query(
             value = "UPDATE tb_users SET user_type = :userType WHERE user_id = :userId",
