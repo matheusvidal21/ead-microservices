@@ -1,5 +1,6 @@
 package com.ead.course.validation;
 
+import com.ead.course.configs.security.AuthenticationCurrentUserService;
 import com.ead.course.dto.CourseDto;
 import com.ead.course.enums.UserType;
 import com.ead.course.models.UserModel;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +25,9 @@ public class CourseValidator implements Validator {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthenticationCurrentUserService authenticationCurrentUserService;
+
     @Override
     public boolean supports(Class<?> clazz) {
         return false;
@@ -33,17 +38,26 @@ public class CourseValidator implements Validator {
         CourseDto courseDto = (CourseDto) target;
         validator.validate(courseDto, errors);
         if (!errors.hasErrors()) {
-            validateUserInstructor(courseDto.getUserInstructor(), errors);
+            try {
+                validateUserInstructor(courseDto.getUserInstructor(), errors);
+            } catch (AccessDeniedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private void validateUserInstructor(UUID userInstructor, Errors errors) {
-        Optional<UserModel> userModelOptional = this.userService.findById(userInstructor);
-        if(userModelOptional.isEmpty()) {
-            errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found");
-        }
-        if(userModelOptional.get().getUserType().equals(UserType.STUDENT.toString())){
-            errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN");
+    private void validateUserInstructor(UUID userInstructor, Errors errors) throws AccessDeniedException {
+        UUID currentUserId = this.authenticationCurrentUserService.getCurrentUser().getUserId();
+        if (currentUserId.equals(userInstructor)){
+            Optional<UserModel> userModelOptional = this.userService.findById(userInstructor);
+            if(userModelOptional.isEmpty()) {
+                errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found");
+            }
+            if(userModelOptional.get().getUserType().equals(UserType.STUDENT.toString())){
+                errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN");
+            }
+        } else {
+            throw new AccessDeniedException("User not allowed to create course for another user");
         }
     }
 }

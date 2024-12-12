@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -69,10 +71,12 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDateTime creationDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @Column(nullable = false)
+    @UpdateTimestamp
     private LocalDateTime lastUpdateDate;
 
     public UserEventDto convertToUserEventDto(){

@@ -32,7 +32,7 @@ public class CourseUserController {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasAnyRole('STUDENT')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @GetMapping("/courses/{courseId}/users")
     public ResponseEntity<Object> getAllUsersByCourse(SpecificationTemplate.UserSpec spec,
                                                       @PathVariable UUID courseId,
@@ -45,7 +45,7 @@ public class CourseUserController {
         return ResponseEntity.ok(this.userService.findAll(SpecificationTemplate.userCourseId(courseId).and(spec), pageable));
     }
 
-    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @PostMapping("/courses/{courseId}/users/subscription")
     public ResponseEntity<Object> saveSubscriptionUserInCourse(@PathVariable UUID courseId,
                                                                @RequestBody @Valid SubscriptionDto subscriptionDto){
