@@ -1,0 +1,24 @@
+server:
+  port: ${PORT}
+
+spring:
+  application:
+    name: ead-service-registry
+
+ead:
+  service-registry:
+    username: ${EUREKA_USERNAME}
+    password: ${EUREKA_PASSWORD}
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry:
+    service-url:
+      defaultZone: ${EUREKA_URL}
+  server:
+    enable-self-preservation: false
+    enable-replication: false
+  instance:
+    hostname: ${APP_DOMAIN_NAME}
+    non-secure-port: 80
