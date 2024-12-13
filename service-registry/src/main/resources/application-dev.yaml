@@ -1,0 +1,19 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: ead-service-registry
+
+ead:
+  service-registry:
+    username: serviceregistry
+    password: 'ead123sr'
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  server:
+    enable-self-preservation: false
+    enable-replication: false
