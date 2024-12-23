@@ -1,0 +1,15 @@
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\adapters\configs\BeanConfiguration.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\adapters\configs\RabbitMQConfig.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\adapters\configs\security\AuthenticationCurrentUserService.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\adapters\configs\security\AuthenticationEntryPointImpl.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\adapters\configs\security\AuthenticationJwtFilter.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\adapters\configs\security\JwtProvider.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\adapters\configs\security\UserDetailsImpl.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\adapters\configs\security\WebSecurityConfig.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\core\domain\enums\NotificationStatus.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\core\domain\NotificationDomain.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\core\domain\PageInfo.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\core\ports\NotificationPersistencePort.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\core\ports\NotificationServicePort.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\core\services\NotificationServicePortImpl.java
+C:\Users\Mathe\Documents\Estudos\Java\Microservice - EAD\notification-hex\src\main\java\com\ead\notification\notification\hex\NotificationHexApplication.java
