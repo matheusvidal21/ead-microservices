@@ -11,6 +11,9 @@
     <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white"/>
 </p>    
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/97a87bda-3b1e-4b8e-8321-d32a99f3bdf7" alt="Logo DSCommerce" height="600">
+</p>
 
 Bem-vindo ao repositório do **EAD Microservices**! Este projeto foi desenvolvido como parte de uma formação em microservices com Java e Spring e tem como objetivo demonstrar uma arquitetura robusta e escalável utilizando padrões e ferramentas modernas. 
 
